@@ -1,7 +1,7 @@
 CREATE TABLE users(
     id serial PRIMARY KEY,
     name text NOT NULL,
-    picture text NOT NULL,
+    image text NOT NULL,
     email text UNIQUE NOT NULL,
     password text NOT NULL,
     "createdAt" timestamp with time zone DEFAULT NOW() NOT NULL
