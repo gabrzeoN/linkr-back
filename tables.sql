@@ -17,10 +17,10 @@ CREATE TABLE sessions(
 
 CREATE TABLE hashtags(
     id serial PRIMARY KEY,
-    name text UNIQUE NOT NULL
+    name text
 );
 
-CREATE TABLE categories(
+CREATE TABLE postsHashtags(
     id serial PRIMARY KEY,
     "postId" integer NOT NULL,
     "hashtagId" integer NOT NULL REFERENCES hashtags(id)
@@ -29,9 +29,13 @@ CREATE TABLE categories(
 CREATE TABLE posts(
     id serial PRIMARY KEY,
     "userId" integer NOT NULL REFERENCES users(id),
-    "categoryId" integer NOT NULL REFERENCES categories(id),
     "url" text UNIQUE NOT NULL,
-    "likes" int NOT NULL,
-    "message" text NOT NULL,
+    "message" text,
     "createdAt" timestamp with time zone DEFAULT NOW() NOT NULL 
+);
+
+CREATE TABLE likes(
+    id serial PRIMARY KEY,
+    "postId" integer NOT NULL,
+    "userId" integer NOT NULL REFERENCES users(id)
 );
