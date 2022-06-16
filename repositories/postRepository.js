@@ -1,14 +1,13 @@
 import db from "./../config/db.js";
 
-async function createPost(url, message, id) {
-    return db.query(`
+export async function createPost(url, message, userId) {
+    return  await db.query(`
         INSERT INTO posts(url, message, "userId")
         VALUES ($1, $2, $3)
-    `, [url, message, id])
+    `, [url, message, userId])
 }
 
-const postRepository={
-    createPost
-};
-
-export default postRepository;
+export async function findPostId(userId){
+    return await db.query(`SELECT * FROM posts WHERE "userId"=$1 
+    ORDER BY id DESC LIMIT 1`,[userId]);
+} 

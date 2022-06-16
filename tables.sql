@@ -33,3 +33,11 @@ CREATE TABLE posts(
     message text,
     "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
 );
+
+CREATE TABLE postshashtags(
+    id serial PRIMARY KEY,
+    "postId" integer NOT NULL REFERENCES posts(id),
+    "hashtagId"integer REFERENCES hashtags(id),
+    "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
+);
+
