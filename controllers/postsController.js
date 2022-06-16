@@ -2,11 +2,12 @@ import postRepository from "../repositories/postRepository.js";
 //import hashtagsRepository from "../repositories/hashtagRepository.js";
 
 export async function addPost(req, res){
+    console.log("passeiii")
     const {userId} = res.locals.session;
-    console.log("userId", userId);
+    console.log("userId", res.locals.session);
 
-    const hashtag= res.locals.hashtags;
-    console.log("hashtagId", hashtag);
+    const {hashtags} = res.locals;
+    console.log("hashtagId", hashtags);
 
     const {url, message} = req.body;
 

@@ -1,36 +1,32 @@
-import { response } from "express";
 import {insertHashtag, verifyHashtag} from "../repositories/hashtagRepository.js";
 
 export async function addHashtags(req, res, next){
     const {url, message} = req.body;
-    const hashtagsArr = [];
-    console.log("message", message);
+    //console.log("message", message);
     try {
+        const hashtagsArr = [];
         if(message.length > 0) {
             const auxArr = message.split(" ");
             const auxFilter = auxArr.filter((item) => item.includes("#"));
             //console.log( "arr", auxFilter);
 
-            auxFilter.forEach((element) => {
-                const nameHashtag = element.slice(-(element.length - 1));
-                //console.log(nameHashtag);
-                const verify = verifyHashtag(nameHashtag);
-                    verify.then((response) => {
-                        //console.log(response);
-                        if(response.rowCount === 0){
-                            insertHashtag(nameHashtag); 
-                            const newHashtag = verifyHashtag(nameHashtag);
-                                newHashtag.then((dataHashtag) => hashtagsArr.push(dataHashtag.rows[0].id));
-                            res.locals.hashtags = [...hashtagsArr];
-                        } else {
-                            hashtagsArr.push(response.rows[0].id);
-                            res.locals.hashtags = [...hashtagsArr];
-                            console.log(res.locals.hashtags);
-                        }
-                    })
-            }); 
-        } 
-        
+            for(let i = 0; i < auxFilter.length; i++){
+                let item = auxFilter[i];
+                const nameHashtag = auxFilter[i].slice(-(item.length - 1));
+                const verify = await verifyHashtag(nameHashtag);
+                if(verify.rowCount === 0){
+                    await insertHashtag(nameHashtag); 
+                    const newHashtag = await verifyHashtag(nameHashtag);
+                    hashtagsArr.push(newHashtag.rows[0].id);
+                    res.locals.hashtags = [...hashtagsArr];
+                } else {
+                    hashtagsArr.push(verify.rows[0].id);
+                    res.locals.hashtags = [...hashtagsArr];
+                    console.log(res.locals.hashtags);
+                }
+            }
+            res.locals.hashtags = [...hashtagsArr];
+        }
         res.status(200); 
     } catch (error) {
         console.log(error)
