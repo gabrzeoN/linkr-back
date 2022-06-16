@@ -33,3 +33,9 @@ CREATE TABLE posts(
     message text,
     "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
 );
+
+CREATE TABLE likes(
+    id serial PRIMARY KEY,
+    "whoLiked" integer NOT NULL REFERENCES users(id),
+    "postId" integer NOT NULL REFERENCES posts(id)
+);
