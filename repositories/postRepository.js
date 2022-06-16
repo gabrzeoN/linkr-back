@@ -7,8 +7,19 @@ async function createPost(url, message, id) {
     `, [url, message, id])
 }
 
+async function selectPostById(postId){
+    const user = await db.query(`
+        SELECT *
+        FROM posts
+        WHERE id = $1;`,
+        [postId]
+    );
+    return user.rows[0];
+}
+
 const postRepository={
-    createPost
+    createPost,
+    selectPostById
 };
 
 export default postRepository;

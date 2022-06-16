@@ -1,9 +1,12 @@
 import { selectLike, insertNewLike, deleteLike } from "../repositories/likesRepository.js";
+import postRepository from "../repositories/postRepository.js";
 
 export async function likeDislikePost(req, res){
     const {userId} = res.locals.session;
     const {postId} = req.params;
     try{
+        const post = await postRepository.selectPostById(postId);
+        if(!post) return res.status(404).send("This post no longer exists!");
         const like = await selectLike(userId, postId);
         if(!like){
             await insertNewLike(userId, postId);
