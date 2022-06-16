@@ -8,15 +8,16 @@ export async function addPost(req, res){
     const {url, message} = req.body;
 
     try {
-        await createPost(url, message, userId);   
-
-        for(let i = 0; i < hashtags.length; i++){
-            let hashtagId = hashtags[i];
-            const postsUserList = await findPostId(userId);
-            let postId = postsUserList.rows[0].id; 
-            await addPostHashtags(postId, hashtagId);
+        await createPost(url, message, userId);  
+        if(hashtags){
+            for(let i = 0; i < hashtags.length; i++){
+                let hashtagId = hashtags[i];
+                const postsUserList = await findPostId(userId);
+                let postId = postsUserList.rows[0].id; 
+                await addPostHashtags(postId, hashtagId);
+            }
         }
-        
+                
         res.sendStatus(201);
     } catch (error) {
         console.log(error)
