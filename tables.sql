@@ -17,25 +17,19 @@ CREATE TABLE sessions(
 
 CREATE TABLE hashtags(
     id serial PRIMARY KEY,
-    name text
+    name text NOT NULL
 );
 
-CREATE TABLE postsHashtags(
+CREATE TABLE postshashtags(
     id serial PRIMARY KEY,
-    "postId" integer NOT NULL,
+    "postId" integer NOT NULL REFERENCES posts(id),
     "hashtagId" integer NOT NULL REFERENCES hashtags(id)
 );
 
 CREATE TABLE posts(
     id serial PRIMARY KEY,
     "userId" integer NOT NULL REFERENCES users(id),
-    "url" text UNIQUE NOT NULL,
-    "message" text,
-    "createdAt" timestamp with time zone DEFAULT NOW() NOT NULL 
-);
-
-CREATE TABLE likes(
-    id serial PRIMARY KEY,
-    "postId" integer NOT NULL,
-    "userId" integer NOT NULL REFERENCES users(id)
+    url text NOT NULL,
+    message text,
+    "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
 );

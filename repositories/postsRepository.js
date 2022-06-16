@@ -1,22 +1,22 @@
 import db from "../config/db.js";
 
-export async function insertNewPost (userId, userImage, url, message){
-    return await db.query(`
-    
-        INSERT INTO posts(userId, "userImage", "url", "message")
-        VALUES ($1, $2, $3, $4);
-
-    `, [userId, userImage, url, message]);
-}
-
 export async function obtainPosts (){
     return await db.query(`
     
-        SELECT * FROM posts
-        ORDER BY "createdAt" DESC,
+        SELECT
+            usr.id AS "userId",
+            usr.name,
+            usr.image AS "image",
+            pst.id,
+            pst.url,
+            pst.message,
+            pst."createdAt"
+        FROM posts pst
+        JOIN users usr
+            ON usr.id = pst."userId"
+        ORDER BY "createdAt" DESC
         LIMIT 20;
 
     `);
-
-    /* return posts.rows; */
 } 
+

@@ -1,25 +1,19 @@
-import { insertNewPost, obtainPosts } from "../repositories/postsRepository";
-
-export async function createPost(req, res){
-
-    const { userId, url, message } = req.body;
-
-    try {
-        await insertNewPost(userId, url, message);
-        res.sendStatus(201);
-    } catch (e) {
-        res.send(e).status(500);
-    }
-
-}
+import { obtainPosts } from "../repositories/postsRepository.js";
+import urlMetadata from "url-metadata";
 
 export async function getPost(req, res){
 
+    /* const metadata = null; */
+
     try {
-        await obtainPosts();
-        res.sendStatus(201);
+        const result = await obtainPosts();
+        if (result.rowCount === 0) {
+            return send("There are no posts yet");
+        }
+        const posts = result.rows;
+        res.send(posts);
     } catch (e) {
-        res.send(e).status(500);
+        res.send("An error occurred. Please, try again later").status(500);
     }
 
 }
