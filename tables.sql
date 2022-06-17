@@ -40,4 +40,3 @@ CREATE TABLE postshashtags(
     "hashtagId"integer REFERENCES hashtags(id),
     "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
 );
-
