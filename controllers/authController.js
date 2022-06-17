@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid} from "uuid";
-import { insertNewSession } from "../repositories/sessionsRespository.js";
+import { insertNewSession, invalidateSession } from "../repositories/sessionsRespository.js";
 import { selectUserByEmail, createUser, verifyEmail } from "../repositories/usersRepository.js";
 
 export async function signIn(req, res){
@@ -36,3 +36,14 @@ export async function signUp(req, res) {
       return res.sendStatus(500);
     }
   }
+
+  export async function signOut(req, res){
+    const {token} = res.locals.session;
+    try{
+      await invalidateSession(token);
+      return res.sendStatus(200);
+    }catch(e){
+      console.log(error.message)
+      return res.sendStatus(500);
+    }
+}
