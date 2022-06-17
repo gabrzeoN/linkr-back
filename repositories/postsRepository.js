@@ -2,7 +2,6 @@ import db from "../config/db.js";
 
 export async function obtainPosts (){
     return await db.query(`
-    
         SELECT
             usr.id AS "userId",
             usr.name,
@@ -16,7 +15,6 @@ export async function obtainPosts (){
             ON usr.id = pst."userId"
         ORDER BY "createdAt" DESC
         LIMIT 20;
-
     `);
 } 
 

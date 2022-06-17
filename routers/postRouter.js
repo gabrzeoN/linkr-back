@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { getPost } from "../controllers/postsController.js";
 import validSchema from "../middwares/validateSchemaMiddware.js";
-import {userSchema} from "../schemas/authSchemas.js";
 import { postSchema } from "../schemas/postSchema.js";
 
 const postRouter = Router();
