@@ -1,4 +1,4 @@
-import { selectLike, insertNewLike, deleteLike } from "../repositories/likesRepository.js";
+import { selectLike, insertNewLike, deleteLike, countLikesByPost } from "../repositories/likesRepository.js";
 import postRepository from "../repositories/postRepository.js";
 
 export async function likeDislikePost(req, res){
@@ -10,11 +10,12 @@ export async function likeDislikePost(req, res){
         const like = await selectLike(userId, postId);
         if(!like){
             await insertNewLike(userId, postId);
-            return res.sendStatus(201);
         }else{
             await deleteLike(userId, postId);
-            return res.sendStatus(202);
         }
+        
+        const amountLikes = await countLikesByPost(postId);
+        return res.status(200).send(amountLikes);
     }catch(e){
         console.log(error.message);
         return res.sendStatus(500);

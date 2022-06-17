@@ -25,3 +25,13 @@ export async function deleteLike(userId, postId){
         [userId, postId]
     );
 }
+
+export async function countLikesByPost(userId, postId){
+    const like = await db.query(`
+        SELECT COUNT(*)
+        FROM likes
+        WHERE "whoLiked" = $1 AND "postId" = $2;`,
+        [userId, postId]
+    );
+    return like.rows[0];
+}
