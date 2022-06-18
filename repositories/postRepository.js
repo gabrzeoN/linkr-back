@@ -7,6 +7,16 @@ export async function createPost(url, message, userId) {
     `, [url, message, userId])
 }
 
+export async function selectPostById(postId){
+    const user = await db.query(`
+        SELECT *
+        FROM posts
+        WHERE id = $1;`,
+        [postId]
+    );
+    return user.rows[0];
+}
+
 export async function findPostId(userId){
     return await db.query(`SELECT * FROM posts WHERE "userId"=$1 
     ORDER BY id DESC LIMIT 1`,[userId]);
