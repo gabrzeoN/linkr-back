@@ -11,6 +11,9 @@ export async function findPostId(userId){
     return await db.query(`SELECT * FROM posts WHERE "userId"=$1 
     ORDER BY id DESC LIMIT 1`,[userId]);
 } 
+export async function getPostById(postId){
+    return await db.query(`SELECT * FROM posts WHERE id=$1`,[postId]);
+}
 
 export async function obtainPosts (){
     return await db.query(`
@@ -29,3 +32,10 @@ export async function obtainPosts (){
         LIMIT 20;
     `);
 } 
+
+export async function updateMessage(postId, newMessage){
+    return await db.query(`
+        UPDATE posts SET message=$1 WHERE id=$2
+    `, [newMessage, postId]);
+}
+
