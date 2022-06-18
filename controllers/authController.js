@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import db from "../config/db.js";
 import { v4 as uuid} from "uuid";
 import { insertNewSession, invalidateSession } from "../repositories/sessionsRespository.js";
 import { selectUserByEmail, createUser, verifyEmail } from "../repositories/usersRepository.js";
@@ -46,4 +47,30 @@ export async function signUp(req, res) {
       console.log(error.message)
       return res.sendStatus(500);
     }
+}
+
+export async function getUserFromSearch(req, res) {
+    
+  const {name} = req.query;
+  const params = [];
+  let whereClause = "";
+
+  if (name && name.length >= 3) {
+      params.push(`${name}%`);
+      whereClause = `WHERE users.name ILIKE $${params.length}`;
+  }
+
+  try {
+    console.log(whereClause);
+    const result = await db.query(`
+      SELECT users.*
+      FROM users
+      ${whereClause};
+    `, params);
+      console.log(result.rows);
+      res.status(200).send(result.rows);
+  } catch (e) {
+      res.sendStatus(500);
+  }
+
 }
