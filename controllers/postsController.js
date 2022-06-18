@@ -1,6 +1,7 @@
 import urlMetadata from "url-metadata";
-import {createPost, findPostId, obtainPosts} from "../repositories/postRepository.js";
-import { addPostHashtags } from "../repositories/postHashRepository.js";
+import {createPost, findPostId, getPostById, obtainPosts, updateMessage} from "../repositories/postRepository.js";
+import { addPostHashtags, deletePostHashtags } from "../repositories/postHashRepository.js";
+
 
 export async function getPost(req, res){
     try {
@@ -47,5 +48,24 @@ export async function addPost(req, res){
     }
 }
 
+export async function updatePost(req, res){
+    const {postId, userId, newMessage} = req.body;
+    const {hashtags} = res.locals;
+    console.log(req.body);
+    try {
+        await deletePostHashtags(postId);
+        await updateMessage(postId, newMessage);
 
-
+        if(hashtags){
+            for(let i = 0; i < hashtags.length; i++){
+                let hashtagId = hashtags[i];
+                await addPostHashtags(postId, hashtagId);
+            }
+        }
+        const newpost = await getPostById(postId);
+        res.status(200).send(newpost.rows);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send("An error occurred. Please, try again later");
+    }
+}
