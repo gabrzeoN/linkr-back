@@ -39,3 +39,10 @@ CREATE TABLE likes(
     "whoLiked" integer NOT NULL REFERENCES users(id),
     "postId" integer NOT NULL REFERENCES posts(id)
 );
+
+CREATE TABLE postshashtags(
+    id serial PRIMARY KEY,
+    "postId" integer NOT NULL REFERENCES posts(id),
+    "hashtagId"integer REFERENCES hashtags(id),
+    "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
+);
