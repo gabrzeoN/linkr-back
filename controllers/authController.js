@@ -61,13 +61,11 @@ export async function getUserFromSearch(req, res) {
   }
 
   try {
-    console.log(whereClause);
     const result = await db.query(`
       SELECT users.*
       FROM users
       ${whereClause};
     `, params);
-      console.log(result.rows);
       res.status(200).send(result.rows);
   } catch (e) {
       res.sendStatus(500);
