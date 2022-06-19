@@ -20,12 +20,6 @@ CREATE TABLE hashtags(
     name text NOT NULL
 );
 
-CREATE TABLE postshashtags(
-    id serial PRIMARY KEY,
-    "postId" integer NOT NULL REFERENCES posts(id),
-    "hashtagId" integer NOT NULL REFERENCES hashtags(id)
-);
-
 CREATE TABLE posts(
     id serial PRIMARY KEY,
     "userId" integer NOT NULL REFERENCES users(id),
