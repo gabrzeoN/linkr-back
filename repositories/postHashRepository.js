@@ -9,6 +9,7 @@ export async function addPostHashtags(postId, hashtagId){
 
 export async function deletePostHashtags(postId){
     return await db.query(`
-        DELETE FROM postshashtags WHERE "postId"=$1
+        DELETE FROM postshashtags 
+        WHERE "postId"=$1
     `, [postId]);
 }
