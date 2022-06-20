@@ -1,5 +1,5 @@
 import { Router } from "express";
-import trendingRouter from "../repositories/trendingRepository.js";
+import trendingRouter from "./trendingRouter.js";
 import authRouter from "./authRouter.js"
 import postRouter from "./postRouter.js";
 import tagsRouter from "./tagsRouter.js";
