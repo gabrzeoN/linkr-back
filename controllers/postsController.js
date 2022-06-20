@@ -1,6 +1,7 @@
 import urlMetadata from "url-metadata";
-import {createPost, findPostId, getPostById, obtainPosts, updateMessage} from "../repositories/postRepository.js";
+import {createPost, findPostId, getPostById, obtainPosts, updateMessage, deletePostById} from "../repositories/postRepository.js";
 import { addPostHashtags, deletePostHashtags } from "../repositories/postHashRepository.js";
+import {deleteLike} from "./../repositories/likesRepository.js"
 
 
 export async function getPost(req, res){
@@ -67,5 +68,21 @@ export async function updatePost(req, res){
     } catch (error) {
         console.log(error);
         return res.status(500).send("An error occurred. Please, try again later");
+    }
+}
+
+export async function deletePost(req, res){
+    const {postId} = req.params;
+    const {userId} = res.locals.session;
+    console.log(postId);
+    try {
+        await deleteLike(userId, postId);
+        await deletePostHashtags(postId);
+        await deletePostById(postId);
+        res.sendStatus(200);
+
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500);
     }
 }

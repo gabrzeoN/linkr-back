@@ -25,7 +25,7 @@ CREATE TABLE posts(
     "userId" integer NOT NULL REFERENCES users(id),
     url text NOT NULL,
     message text,
-    "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
+    "createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE likes(
@@ -38,5 +38,5 @@ CREATE TABLE postshashtags(
     id serial PRIMARY KEY,
     "postId" integer NOT NULL REFERENCES posts(id),
     "hashtagId"integer REFERENCES hashtags(id),
-    "createdAt" timestamp with time zone NOT NULL DEFAULT 'NOW()'
+    "createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );

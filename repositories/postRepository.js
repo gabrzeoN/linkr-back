@@ -59,3 +59,9 @@ export async function updateMessage(postId, newMessage){
     `, [newMessage, postId]);
 }
 
+export async function deletePostById(postId){
+    return await db.query(`
+        DELETE FROM posts 
+        WHERE id=$1
+    `, [postId]);
+}
