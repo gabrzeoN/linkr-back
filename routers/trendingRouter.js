@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getTrending } from '../controllers/trendingController.js'
-import { validateToken } from "../middwares/validateTokenMiddware.js"
+import validateToken from "../middwares/validateTokenMiddware.js"
 
 const trendingRouter = Router();
 
