@@ -1,6 +1,6 @@
 import db from "../config/db.js"
 
-export async function trending() {
+export async function getTrending() {
   return await db.query(`
   SELECT hashtags.name AS hashtag, COUNT("hashtagId") AS frequency FROM postshashtags 
   JOIN hashtags ON "hashtagId"=hashtags.id 
