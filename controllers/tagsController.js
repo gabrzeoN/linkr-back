@@ -1,15 +1,28 @@
 import { tagRepository } from "../repositories/tagsRepository.js";
+import urlMetadata from "url-metadata";
+
 
 export async function getTagPosts(req, res) {
   const { hashtag } = req.params;
   try {
     const result = await tagRepository.getPosts(hashtag);
     if (result.rowCount === 0) {
-      return res.sendStatus(404);
+      return res.send("There are no posts yet").status(200);
     }
-    res.status(200).send(result.rows);
+    const posts = [...result.rows];
+    for (let i = 0; i < result.rows.length; i++) {
+      const metadata = await urlMetadata(posts[i].url);
+      posts[i] = {
+        ...posts[i],
+        metadata: {
+          title: metadata.title,
+          image: metadata.image,
+          description: metadata.description
+        }
+      };
+    }
+    return res.status(200).send(posts);
   } catch (e) {
-    console.error(e);
-    res.status(500).send("Erro de conexão com servidor");
+    return res.send("An error occurred. Please, try again later").status(500);
   }
 }

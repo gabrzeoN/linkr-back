@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { getTagPosts } from "../controllers/tagsController.js";
-import validateToken from "../middwares/validateTokenMiddware.js";
+import validToken from "../middwares/validateTokenMiddware.js";
 
 const tagsRouter = Router();
 
-tagsRouter.get("/hashtag/:hashtag", validateToken, getTagPosts);
+tagsRouter.get("/hashtag/:hashtag", validToken, getTagPosts);
 
 export default tagsRouter;
