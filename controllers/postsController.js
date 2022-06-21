@@ -72,6 +72,7 @@ export async function updatePost(req, res){
 }
 
 export async function deletePost(req, res){
+    console.log("deletando");
     const {postId} = req.params;
     const {userId} = res.locals.session;
     console.log(postId);
