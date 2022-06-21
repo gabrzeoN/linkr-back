@@ -1,8 +1,8 @@
-import { trending } from "../repositories/trendingRepository.js";
+import { getTrending } from "../repositories/trendingRepository.js";
 
-export async function getTrending(req, res) {
+export async function trendingController(req, res) {
   try {
-    const { rows: trendingHashtags } = await trending.getTrending();
+    const { rows: trendingHashtags } = await getTrending();
 
     res.send(trendingHashtags);
   } catch (error) {
