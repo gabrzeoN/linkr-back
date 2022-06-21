@@ -1,32 +1,33 @@
-import hashtagsRepository from "../repositories/hashtagRepository.js";
+import {insertHashtag, verifyHashtag} from "../repositories/hashtagRepository.js";
 
 export async function addHashtags(req, res, next){
     const {url, message} = req.body;
+    //console.log("message", message);
     try {
+        const hashtagsArr = [];
         if(message.length > 0) {
-            if(message.includes("#") === false) return res.sendStatus(200);
-            const idx = message.indexOf("#");
-            const aux = message.slice(idx);
-            const auxString = aux.split("#");
-            auxString.forEach((item) => {
-                if(item.length !== 0){
-                    console.log(item);
-                    const verify = hashtagsRepository.verifyHashtag(item);
-                    if(verify.rowCount === 0){
-                        hashtagsRepository.insertHashtag(item); 
-                        const newHashtag = hashtagsRepository.verifyHashtag(item);
-                            res.locals.hashtags= newHashtag.rows[0].id;
-                            console.log(res.locals);
-                    } else {
-                        res.locals.hashtags = verify.rows[0].id;
-                        console.log(res.locals);
-                    }
+            const auxArr = message.split(" ");
+            const auxFilter = auxArr.filter((item) => item.includes("#"));
+            //console.log( "arr", auxFilter);
+
+            for(let i = 0; i < auxFilter.length; i++){
+                let item = auxFilter[i];
+                const nameHashtag = auxFilter[i].slice(-(item.length - 1));
+                const verify = await verifyHashtag(nameHashtag);
+                if(verify.rowCount === 0){
+                    await insertHashtag(nameHashtag); 
+                    const newHashtag = await verifyHashtag(nameHashtag);
+                    hashtagsArr.push(newHashtag.rows[0].id);
+                    res.locals.hashtags = [...hashtagsArr];
+                } else {
+                    hashtagsArr.push(verify.rows[0].id);
+                    res.locals.hashtags = [...hashtagsArr];
+                    console.log(res.locals.hashtags);
                 }
-            });
-        } else {
-            console.log(message);
-            res.sendStatus(200);
+            }
+            res.locals.hashtags = [...hashtagsArr];
         }
+        res.status(200); 
     } catch (error) {
         console.log(error)
         return res.sendStatus(500);

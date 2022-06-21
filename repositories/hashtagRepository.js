@@ -1,22 +1,15 @@
 import db from "./../config/db.js";
 
-async function insertHashtag(item){
-    return db.query(`
+export async function insertHashtag(nameHashtag){
+    return await db.query(`
         INSERT INTO hashtags(name) 
         VALUES($1)`, 
-        [item]);
+        [nameHashtag]);
 }
 
-async function verifyHashtag(item){
-    return db.query(`
+export async function verifyHashtag(nameHashtag){
+    const hashtag = await db.query(`
         SELECT * FROM hashtags WHERE name=$1
-    `, [item]);
+        `, [nameHashtag]);
+    return hashtag;
 }
-
-const hashtagsRepository = {
-    insertHashtag,
-    verifyHashtag
-}
-
-export default hashtagsRepository;
-
