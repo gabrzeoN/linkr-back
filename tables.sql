@@ -40,3 +40,9 @@ CREATE TABLE postshashtags(
     "hashtagId"integer REFERENCES hashtags(id),
     "createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE followers(
+    id serial PRIMARY KEY,
+    follower integer NOT NULL REFERENCES users(id),
+    followed integer NOT NULL REFERENCES users(id)
+);
