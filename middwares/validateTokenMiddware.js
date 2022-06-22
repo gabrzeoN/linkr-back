@@ -12,7 +12,9 @@ export default async function validToken(req, res, next){
         res.locals.session = session;
         console.log("passei sessão", session);
         next();
-    }catch (err){
+    } catch (error){
+        console.log(error);
         return res.sendStatus(500);
     }
+    
 }

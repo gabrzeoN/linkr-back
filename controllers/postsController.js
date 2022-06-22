@@ -77,9 +77,9 @@ export async function deletePost(req, res){
     const {userId} = res.locals.session;
     console.log(postId);
     try {
-        await deleteLike(userId, postId);
-        await deletePostHashtags(postId);
-        await deletePostById(postId);
+        await deleteLike(userId, parseInt(postId));
+        await deletePostHashtags(parseInt(postId));
+        await deletePostById(parseInt(postId));
         res.sendStatus(200);
 
     } catch (error) {
