@@ -9,7 +9,9 @@ export default async function validToken(req, res, next){
         if(!session) return res.status(401).send("You are logged off, please sign in first!");
         res.locals.session = session;
         next();
-    }catch (err){
+    } catch (error){
+        console.log(error);
         return res.sendStatus(500);
     }
+    
 }
