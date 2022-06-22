@@ -4,18 +4,14 @@ import { insertHashtag, verifyHashtag } from "../repositories/hashtagRepository.
 export async function verifyPost(req, res, next){
     const {postId, userId, newMessage} = req.body;
     const {session} = res.locals;
-    console.log(req.body);
     try {
         if(userId !== session.userId) return res.sendStatus(401);
-        //procura o post na tabela de posts
+        
         const post = await getPostById(postId);
         if(post.rowCount === 0) return res.status(404).send("not found");
-        console.log("post encontrado", post.rows);
 
-        //verifica se a mensagem é igual a que está no banco
-        if(newMessage === post.rows[0].message) return res.status(200).send("não é necessário atualizar a mensagem!");
+        if(newMessage === post.rows[0].message) return res.status(200);
 
-        //verifica se as hashtags existem e se já estão no banco
         const hashtagsArr = [];
         if(newMessage.length > 0) {
             const auxArr = newMessage.split(" ");
@@ -34,7 +30,6 @@ export async function verifyPost(req, res, next){
                 } else {
                     hashtagsArr.push(verify.rows[0].id);
                     res.locals.hashtags = [...hashtagsArr];
-                    console.log(res.locals.hashtags);
                 }
             }
             res.locals.hashtags = [...hashtagsArr];

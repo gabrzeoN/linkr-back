@@ -23,3 +23,12 @@ export async function createUser({ name, email, image }, passwordHash) {
         VALUES ($1, $2, $3, $4)
     `, [name, email, passwordHash, image]);
 }
+
+export async function getUserPosts(userId){
+    return await db.query(`
+        SELECT posts.*, users.name, users.image 
+        FROM users
+        JOIN posts ON posts."userId" = users.id
+        WHERE posts."userId"=$1
+    `, [userId])
+}

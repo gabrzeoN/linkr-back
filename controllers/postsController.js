@@ -8,7 +8,7 @@ export async function getPost(req, res){
     try {
         const result = await obtainPosts();
         if(result.rowCount === 0) {
-            return res.send("There are no posts yet").status(200);
+            return res.sendStatus(200);
         }
         const posts = [...result.rows];
         for(let i = 0; i < result.rows.length; i++){
