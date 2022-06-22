@@ -40,3 +40,10 @@ CREATE TABLE postshashtags(
     "hashtagId"integer REFERENCES hashtags(id),
     "createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE "comments" (
+    "id" SERIAL PRIMARY KEY,
+    "text" TEXT NOT NULL,
+    "postId" INTEGER REFERENCES posts(id),
+    "userId" INTEGER REFERENCES users(id),
+);
