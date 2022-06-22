@@ -1,27 +1,25 @@
-import { selectLike, selectAllLikesButMine, insertNewLike, deleteLike } from "../repositories/likesRepository.js";
-import { selectPostById } from "../repositories/postRepository.js";
+import { selectFollow, insertNewFollow, deleteFollow } from "../repositories/followersRepository.js";
+import { selectUserById } from "../repositories/usersRepository.js";
 
 export async function followUnfollowUser(req, res){
-    const {userId} = res.locals.session;
-    const {postId} = req.params;
+    let {userId: followerId} = res.locals.session;
+    let {userId: followedId} = req.params;
+    followerId = parseInt(followerId);
+    followedId = parseInt(followedId);
     try{
-        const post = await selectPostById(postId);
-        if(!post) return res.status(404).send("This post no longer exists!");
-        const like = await selectLike(userId, postId);
-        let likedByMe = null;
-        if(!like){
-            await insertNewLike(userId, postId);
-            likedByMe = true;
+        if(followerId === followedId) return res.status(406).send("You cannot follow yourself!");
+        const user = await selectUserById(followedId);
+        if(!user) return res.status(404).send("This user no longer exists!");
+        const following = await selectFollow(followerId, followedId);
+        let followedByMe = null;
+        if(!following){
+            await insertNewFollow(followerId, followedId);
+            followedByMe = true;
         }else{
-            await deleteLike(userId, postId);
-            likedByMe = false;
+            await deleteFollow(followerId, followedId);
+            followedByMe = false;
         }
-        const allLikesButMine = await selectAllLikesButMine(postId, userId);
-        const allLikesName = []
-        allLikesButMine.forEach( like => allLikesName.push(like.name))
-        let likesAmount = allLikesButMine.length;
-        if(likedByMe) likesAmount++;
-        return res.status(200).send({likesAmount, likedByMe, allLikesName});
+        return res.status(200).send({followedByMe});
     }catch(error){
         console.log(error.message);
         return res.sendStatus(500);
@@ -29,21 +27,22 @@ export async function followUnfollowUser(req, res){
 }
 
 export async function checkFollowingStatus(req, res){
-    const {userId} = res.locals.session;
-    const {postId} = req.params;
+    let {userId: followerId} = res.locals.session;
+    let {userId: followedId} = req.params;
+    followerId = parseInt(followerId);
+    followedId = parseInt(followedId);
     try{
-        const post = await selectPostById(postId);
-        if(!post) return res.status(404).send("This post no longer exists!");
-        const like = await selectLike(userId, postId);
-        let likedByMe = null;
-        if(like) likedByMe = true;
-        else likedByMe = false;
-        const allLikesButMine = await selectAllLikesButMine(postId, userId);
-        const allLikesName = []
-        allLikesButMine.forEach( like => allLikesName.push(like.name))
-        let likesAmount = allLikesButMine.length;
-        if(likedByMe) likesAmount++;
-        return res.status(200).send({likesAmount, likedByMe, allLikesName});
+        if(followerId === followedId) return res.status(406).send("You cannot follow yourself!");
+        const user = await selectUserById(followedId);
+        if(!user) return res.status(404).send("This user no longer exists!");
+        const following = await selectFollow(followerId, followedId);
+        let followedByMe = null;
+        if(following){
+            followedByMe = true;
+        }else{
+            followedByMe = false;
+        }
+        return res.status(200).send({followedByMe});
     }catch(error){
         console.log(error.message);
         return res.sendStatus(500);

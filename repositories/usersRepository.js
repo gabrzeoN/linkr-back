@@ -10,6 +10,16 @@ export async function selectUserByEmail(email){
     return user.rows[0];
 }
 
+export async function selectUserById(userId){
+    const user = await db.query(`
+        SELECT *
+        FROM users
+        WHERE id = $1;`,
+        [userId]
+    );
+    return user.rows[0];
+}
+
 export async function verifyEmail(email) {
     return await db.query(`
         SELECT * FROM users WHERE email = $1
