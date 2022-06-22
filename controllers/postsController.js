@@ -72,6 +72,7 @@ export async function updatePost(req, res){
 }
 
 export async function deletePost(req, res){
+    console.log("deletando");
     const {postId} = req.params;
     const {userId} = res.locals.session;
     console.log(postId);
@@ -87,3 +88,37 @@ export async function deletePost(req, res){
     }
 }
 
+export async function getPostsByUser(req, res){
+    const {id} = req.params;
+    console.log(req.params);
+    const userPosts = [];
+
+    try {
+        const result = await obtainPostsByUser(id);
+        console.log("aaaaa", result.rows);
+        if(result.rowCount === 0) {
+            return res.sendStatus(200);
+        }
+        const posts = [...result.rows];
+        
+        for(let i = 0; i < result.rows.length; i++){
+                const metadata = await urlMetadata(result.rows[i].url);
+                result.rows[i] = {
+                ...result.rows[i],
+                metadata: {
+                    title: metadata.title,
+                    image: metadata.image,
+                    description: metadata.description
+                }};
+
+                userPosts.push(result.rows[i]);
+                console.log("ccccc", userPosts);
+            
+        }
+        console.log("bbbb", userPosts);
+
+        return res.status(200).send(userPosts);
+    } catch (e) {
+        return res.send("An error occurred. Please, try again later").status(500);
+    }
+}
