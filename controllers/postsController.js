@@ -86,3 +86,4 @@ export async function deletePost(req, res){
         return res.sendStatus(500);
     }
 }
+
