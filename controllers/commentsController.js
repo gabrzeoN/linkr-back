@@ -2,7 +2,8 @@ import { createComment, listComments, numberComments } from "../repositories/com
 
 
 export async function postComment(req, res) {
-    const { text, postId, userId } = req.body
+    const { userId } = res.locals.session
+    const { text, postId } = req.body
     try {
         await createComment(text, postId, userId);
         return res.sendStatus(201);
