@@ -13,11 +13,10 @@ export async function postComment(req, res) {
 }
 
 export async function getComments(req, res) {
-    const id = req.params.postId
-    const userId = res.locals.user
+    const { postId } = req.params
     try {
-        const comments = await listComments(id, userId.id);
-        res.send(comments)
+        const comments = await listComments(postId);
+        res.status(200).send(comments.rows)
     } catch (error) {
         console.log(error.message)
         return res.sendStatus(500);

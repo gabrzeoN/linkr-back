@@ -7,18 +7,17 @@ export async function createComment(text, postId, userId) {
         VALUES ($1, $2, $3)
     `, [text, postId, userId]);
 }
-export async function listComments(id, userId) {
-    const { rows: comments } = await db.query(`
+export async function listComments(id) {
+    return await db.query(`
         SELECT 
             c.*, u.name AS username, u.image AS image
             FROM
             comments c
             JOIN
-            users u ON u.id= c."userId"
+            users u ON u.id = c."userId"
         WHERE
             "postId"=$1
-    `, [parseInt(id)])
-    return comments
+    `, [id]);
 }
 
 export async function numberComments(id) {
