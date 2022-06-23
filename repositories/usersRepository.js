@@ -32,3 +32,11 @@ export async function getUserPosts(userId){
         WHERE posts."userId"=$1
     `, [userId])
 }
+
+export async function getUserById(id){
+    return db.query(`
+        SELECT id, name, image
+        FROM users
+        WHERE id=$1
+    `, [id]);
+}
