@@ -65,3 +65,22 @@ export async function deletePostById(postId){
         WHERE id=$1
     `, [postId]);
 }
+
+export async function obtainPostsByUser(id){
+    return db.query(`
+        SELECT
+            usr.id AS "userId",
+            usr.name,
+            usr.image AS "image",
+            pst.id,
+            pst.url,
+            pst.message,
+            pst."createdAt"
+        FROM posts pst
+        JOIN users usr
+            ON usr.id = pst."userId"
+        WHERE "userId"=$1
+        ORDER BY "createdAt" DESC
+        LIMIT 20;
+    `, [id])
+}

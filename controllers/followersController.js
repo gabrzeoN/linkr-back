@@ -32,7 +32,7 @@ export async function checkFollowingStatus(req, res){
     followerId = parseInt(followerId);
     followedId = parseInt(followedId);
     try{
-        if(followerId === followedId) return res.status(406).send("You cannot follow yourself!");
+        if(followerId === followedId) return res.status(200).send({isMe: true});
         const user = await selectUserById(followedId);
         if(!user) return res.status(404).send("This user no longer exists!");
         const following = await selectFollow(followerId, followedId);
@@ -42,7 +42,7 @@ export async function checkFollowingStatus(req, res){
         }else{
             followedByMe = false;
         }
-        return res.status(200).send({followedByMe});
+        return res.status(200).send({followedByMe, isMe: false});
     }catch(error){
         console.log(error.message);
         return res.sendStatus(500);

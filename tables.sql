@@ -41,8 +41,16 @@ CREATE TABLE postshashtags(
     "createdAt" timestamp with time zone NOT NULL DEFAULT NOW()
 );
 
+
 CREATE TABLE followers(
     id serial PRIMARY KEY,
     follower integer NOT NULL REFERENCES users(id),
     followed integer NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE "comments" (
+    "id" SERIAL PRIMARY KEY,
+    "text" TEXT NOT NULL,
+    "postId" INTEGER REFERENCES posts(id),
+    "userId" INTEGER REFERENCES users(id)
 );

@@ -12,6 +12,11 @@ if(process.env.MODE === "PROD"){
         rejectUnauthorized: false
     }
 }
+if(process.env.MODE === "DEV"){
+    config.ssl = {
+        rejectUnauthorized: false
+    }
+}
 
 const db = new Pool(config);
 export default db;

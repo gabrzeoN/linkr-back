@@ -2,13 +2,12 @@ import {insertHashtag, verifyHashtag} from "../repositories/hashtagRepository.js
 
 export async function addHashtags(req, res, next){
     const {url, message} = req.body;
-    //console.log("message", message);
+    
     try {
         const hashtagsArr = [];
         if(message.length > 0) {
             const auxArr = message.split(" ");
             const auxFilter = auxArr.filter((item) => item.includes("#"));
-            //console.log( "arr", auxFilter);
 
             for(let i = 0; i < auxFilter.length; i++){
                 let item = auxFilter[i];
@@ -22,7 +21,6 @@ export async function addHashtags(req, res, next){
                 } else {
                     hashtagsArr.push(verify.rows[0].id);
                     res.locals.hashtags = [...hashtagsArr];
-                    console.log(res.locals.hashtags);
                 }
             }
             res.locals.hashtags = [...hashtagsArr];
