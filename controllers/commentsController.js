@@ -17,7 +17,7 @@ export async function getComments(req, res) {
     const { postId } = req.params
     try {
         const comments = await listComments(postId);
-        res.status(200).send(comments.rows)
+        res.status(200).send(comments)
     } catch (error) {
         console.log(error.message)
         return res.sendStatus(500);
