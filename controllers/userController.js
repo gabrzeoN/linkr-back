@@ -11,7 +11,7 @@ export async function getPostsByUserId(req, res){
         if(userPosts.rowCount === 0) return res.sendStatus(200);
 
         const posts = [...userPosts.rows];
-        for(let i = 0; i < result.rows.length; i++){
+        for(let i = 0; i < userPosts.rows.length; i++){
             const metadata = await urlMetadata(posts[i].url);
             posts[i] = {
                 ...posts[i],

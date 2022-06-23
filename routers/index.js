@@ -4,7 +4,7 @@ import authRouter from "./authRouter.js"
 import postRouter from "./postRouter.js";
 import tagsRouter from "./tagsRouter.js";
 import likesRouter from "./likesRouter.js";
-import userRouter from "./usersRouter.js";
+import userRouter from "./userRouter.js";
 
 const router = Router();
 
