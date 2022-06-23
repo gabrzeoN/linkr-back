@@ -49,8 +49,8 @@ CREATE TABLE followers(
 );
 
 CREATE TABLE "comments" (
-    "id" SERIAL PRIMARY KEY,
-    "text" TEXT NOT NULL,
+    id SERIAL PRIMARY KEY,
+    text TEXT NOT NULL,
     "postId" INTEGER REFERENCES posts(id),
     "userId" INTEGER REFERENCES users(id)
 );
