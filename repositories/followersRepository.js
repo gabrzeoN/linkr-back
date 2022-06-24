@@ -10,6 +10,16 @@ export async function selectFollow(followerId, followedId){
     return follow.rows[0];
 }
 
+export async function selectMyFollows(followerId){
+    const follows = await db.query(`
+        SELECT *
+        FROM followers
+        WHERE "follower" = $1`,
+        [followerId]
+    );
+    return follows.rowCount;
+}
+
 export async function insertNewFollow(followerId, followedId){
     return await db.query(`INSERT INTO
         followers("follower", "followed")

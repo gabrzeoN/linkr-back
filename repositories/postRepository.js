@@ -84,3 +84,23 @@ export async function obtainPostsByUser(id){
         LIMIT 20;
     `, [id])
 }
+
+export async function obtainFollowersPosts(followerId){
+    const posts = db.query(`
+        SELECT 
+            u.id AS "userId",
+            u.name,
+            u.image AS "image",
+            p.id,
+            p.url,
+            p.message,
+            p."createdAt"
+        FROM posts p
+        JOIN users u ON u.id = p."userId"
+        JOIN followers f ON u.id = f.followed
+        WHERE f.follower = $1
+        ORDER BY "createdAt" DESC
+        LIMIT 20;
+    `, [followerId]);
+    return posts
+}
