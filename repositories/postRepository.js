@@ -98,7 +98,9 @@ export async function obtainFollowersPosts(followerId){
         FROM posts p
         JOIN users u ON u.id = p."userId"
         JOIN followers f ON u.id = f.followed
-        WHERE f.follower = $1;
+        WHERE f.follower = $1
+        ORDER BY "createdAt" DESC
+        LIMIT 20;
     `, [followerId]);
     return posts
 }
