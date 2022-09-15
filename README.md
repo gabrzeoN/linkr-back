@@ -18,23 +18,21 @@ Implementação de uma rede social de compartilhamento de links!
 
 ## :computer:	 Tecnologias e Conceitos 
 
-- React
 - Node.js
 - Postgresql
 - Arquitetura em camadas
-- axios
 - joi
 - bcrypt
-- styled-components
+
 ***
 
 ## 🏁 Rodando o back-end
 
 1. Primeiro, faça o clone desse repositório na sua maquina:
 ```
-    git clone https://github.com/gabrzeoN/driven-pass.git
+    git clone https://github.com/gabrzeoN/linkr-back.git
     ou
-    git clone git@github.com:gabrzeoN/driven-pass.git
+    git clone git@github.com:gabrzeoN/linkr-back.git
 ```
 
 2. Depois, dentro da pasta, rode o seguinte comando para instalar as dependencias
